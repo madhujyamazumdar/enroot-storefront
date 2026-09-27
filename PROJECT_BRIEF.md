@@ -13,7 +13,7 @@
 
 ## Website
 - Pages: Home, Shop, Product Details, Cart, Checkout, About, and Contact
-- Theme: Minimal and aesthetic, led by dark forest green with warm ivory and muted gold accents
+- Theme: Minimal and aesthetic, balanced between forest-green sections and crisp white sections with subtle muted-gold accents
 - Typography: Elegant serif inspired by luxury fragrance branding
 - Visual reference: The Enroot brand image shared during discovery
 

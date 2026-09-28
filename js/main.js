@@ -127,7 +127,19 @@
       return `- ${product.name} (${item.size}) x ${item.quantity}: ${money(product.price * item.quantity)}`;
     });
     const total = cart.reduce((sum, item) => sum + byId(item.id).price * item.quantity, 0);
-    const message = [`Hello Enroot, I'd like to place this order:`, "", ...lines, "", `Subtotal: ${money(total)}`, `Payment preference: ${formData.get("payment")}`, "", `Name: ${formData.get("name")}`, `Phone: ${formData.get("phone")}`, `Delivery address: ${formData.get("address")}`].join("\n");
+    const addressLines = [
+      `Address line 1: ${formData.get("addressLine1")}`,
+      formData.get("addressLine2") && `Address line 2: ${formData.get("addressLine2")}`,
+      `Area / locality: ${formData.get("locality")}`,
+      `City / town / village: ${formData.get("city")}`,
+      formData.get("district") && `District: ${formData.get("district")}`,
+      `State / province / UT: ${formData.get("state")}`,
+      `PIN / postal code: ${formData.get("postalCode")}`,
+      `Country: ${formData.get("country")}`,
+      formData.get("landmark") && `Landmark: ${formData.get("landmark")}`,
+      formData.get("deliveryInstructions") && `Delivery instructions: ${formData.get("deliveryInstructions")}`
+    ].filter(Boolean);
+    const message = ["Hello Enroot, I'd like to place this order:", "", ...lines, "", `Subtotal: ${money(total)}`, `Payment preference: ${formData.get("payment")}`, "", `Name: ${formData.get("name")}`, `Phone: ${formData.get("phone")}`, "", "Delivery address:", ...addressLines].join("\n");
     window.open(`https://wa.me/${SHOP_PHONE}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
     const status = document.querySelector("[data-checkout-message]");
     if (status) status.textContent = "Your order details are ready in WhatsApp. Send the message there to confirm your order.";

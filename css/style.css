@@ -190,6 +190,11 @@ h1 em, h2 em { color: var(--gold); font-weight: 400; }
 .checkout-form input:not([type="radio"]), .checkout-form textarea, .contact-form input, .contact-form textarea { width: 100%; min-height: 44px; padding: 10px; border: 1px solid #d1d0c7; border-radius: 0; background: var(--paper); color: var(--ink); font-size: 12px; resize: vertical; }
 .checkout-form fieldset { display: flex; flex-wrap: wrap; gap: 13px; margin: 17px 0; padding: 0; border: 0; }
 .checkout-form legend { width: 100%; margin-bottom: 6px; color: var(--ivory); font-size: 10px; font-weight: 600; }
+.checkout-address-fields { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px !important; margin: 18px 0 20px !important; }
+.checkout-address-fields legend { grid-column: 1 / -1; margin-bottom: 2px; }
+.checkout-address-fields .checkout-field { display: block; min-width: 0; margin: 12px 0 5px; color: var(--ivory); font-size: 10px; }
+.checkout-address-fields .checkout-field input, .checkout-address-fields .checkout-field textarea { display: block; min-width: 0; margin-top: 5px; }
+.checkout-address-fields .checkout-field-wide { grid-column: 1 / -1; }
 .radio-option { display: flex; align-items: center; gap: 6px; color: var(--ivory); font-size: 10px; }
 .radio-option input { width: 16px; height: 16px; accent-color: var(--green); }
 .checkout-button { width: 100%; justify-content: space-between; }
@@ -331,6 +336,8 @@ h1 em, h2 em { color: var(--gold); font-weight: 400; }
   .cart-item > img { width: 82px; }
   .cart-item-subtotal { grid-column: 2; grid-row: 2; padding-top: 0; }
   .cart-item-info h2 { font-size: 16px; }
+  .checkout-address-fields { grid-template-columns: 1fr; }
+  .checkout-address-fields .checkout-field-wide { grid-column: 1; }
   .checkout-panel { padding: 17px; }
   .about-hero { min-height: 0; grid-template-columns: 1fr; }
   .about-hero img { position: relative; grid-column: 1; grid-row: 1; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; object-position: center top; }

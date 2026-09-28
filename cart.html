@@ -11,7 +11,44 @@
 <body>
   <div class="announcement">A quieter kind of everyday luxury <span>Complimentary shipping on orders over ₹999</span></div>
   <header class="site-header"><a class="wordmark" href="index.html" aria-label="Enroot home">enroot<span>.</span></a><button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span></button><nav class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="about.html">Our story</a><a href="contact.html">Contact</a><a class="nav-cart active" href="cart.html">Bag <span class="cart-count">0</span></a></nav></header>
-  <main class="cart-page"><section class="page-intro cart-intro"><p class="eyebrow">A considered choice</p><h1>Your <em>bag.</em></h1></section><div class="cart-layout"><section class="cart-items" data-cart-items aria-live="polite"></section><aside class="checkout-panel" data-checkout-panel><div class="cart-total-line"><span>Subtotal</span><strong data-cart-total>₹0</strong></div><p class="shipping-note">Shipping and delivery details will be confirmed with you on WhatsApp.</p><form class="checkout-form" data-checkout-form><p class="eyebrow">Delivery details</p><label for="customer-name">Full name</label><input id="customer-name" name="name" autocomplete="name" required><label for="customer-phone">Phone number</label><input id="customer-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="[0-9]{10,15}" required><label for="customer-address">Full delivery address</label><textarea id="customer-address" name="address" rows="3" autocomplete="street-address" required></textarea><fieldset><legend>Payment preference</legend><label class="radio-option"><input type="radio" name="payment" value="UPI" checked> UPI</label><label class="radio-option"><input type="radio" name="payment" value="Cash on Delivery"> Cash on Delivery</label></fieldset><button class="button button-dark checkout-button" type="submit">Send order on WhatsApp <span aria-hidden="true">↗</span></button><p class="form-message" data-checkout-message aria-live="polite"></p></form><div class="upi-box"><p class="eyebrow">Pay by UPI</p><p>Use your UPI app to pay after Enroot confirms your order.</p><p><strong>UPI ID:</strong> <span data-upi-id>your-upi-id@bank</span></p><img src="images/upi-qr-placeholder.svg" alt="Placeholder graphic for the Enroot UPI payment QR code"><small>Replace this placeholder with your verified UPI ID and QR code.</small></div></aside></div></main>
+  <main class="cart-page">
+    <section class="page-intro cart-intro"><p class="eyebrow">A considered choice</p><h1>Your <em>bag.</em></h1></section>
+    <div class="cart-layout">
+      <section class="cart-items" data-cart-items aria-live="polite"></section>
+      <aside class="checkout-panel" data-checkout-panel>
+        <div class="cart-total-line"><span>Subtotal</span><strong data-cart-total>₹0</strong></div>
+        <p class="shipping-note">Shipping and delivery details will be confirmed with you on WhatsApp.</p>
+        <form class="checkout-form" data-checkout-form>
+          <p class="eyebrow">Delivery details</p>
+          <label for="customer-name">Full name</label>
+          <input id="customer-name" name="name" autocomplete="name" required>
+          <label for="customer-phone">Phone number (WhatsApp)</label>
+          <input id="customer-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="[0-9]{10,15}" required>
+          <fieldset class="checkout-address-fields">
+            <legend>Shipping address</legend>
+            <label class="checkout-field checkout-field-wide">House / flat, building, street<input id="address-line1" name="addressLine1" autocomplete="address-line1" required></label>
+            <label class="checkout-field checkout-field-wide">Apartment, suite, floor (optional)<input id="address-line2" name="addressLine2" autocomplete="address-line2"></label>
+            <label class="checkout-field checkout-field-wide">Area / locality<input id="address-locality" name="locality" autocomplete="address-level3" required></label>
+            <label class="checkout-field">City / town / village<input id="address-city" name="city" autocomplete="address-level2" required></label>
+            <label class="checkout-field">District (optional)<input id="address-district" name="district"></label>
+            <label class="checkout-field">State / province / UT<input id="address-state" name="state" autocomplete="address-level1" required></label>
+            <label class="checkout-field">PIN / postal code<input id="address-postal" name="postalCode" autocomplete="postal-code" inputmode="text" minlength="3" maxlength="12" required></label>
+            <label class="checkout-field checkout-field-wide">Country<input id="address-country" name="country" autocomplete="country-name" value="India" required></label>
+            <label class="checkout-field checkout-field-wide">Nearby landmark (optional)<input id="address-landmark" name="landmark"></label>
+            <label class="checkout-field checkout-field-wide">Delivery instructions (optional)<textarea id="delivery-instructions" name="deliveryInstructions" rows="2"></textarea></label>
+          </fieldset>
+          <fieldset>
+            <legend>Payment preference</legend>
+            <label class="radio-option"><input type="radio" name="payment" value="UPI" checked> UPI</label>
+            <label class="radio-option"><input type="radio" name="payment" value="Cash on Delivery"> Cash on Delivery</label>
+          </fieldset>
+          <button class="button button-dark checkout-button" type="submit">Send order on WhatsApp <span aria-hidden="true">↗</span></button>
+          <p class="form-message" data-checkout-message aria-live="polite"></p>
+        </form>
+        <div class="upi-box"><p class="eyebrow">Pay by UPI</p><p>Use your UPI app to pay after Enroot confirms your order.</p><p><strong>UPI ID:</strong> <span data-upi-id>your-upi-id@bank</span></p><img src="images/upi-qr-placeholder.svg" alt="Placeholder graphic for the Enroot UPI payment QR code"><small>Replace this placeholder with your verified UPI ID and QR code.</small></div>
+      </aside>
+    </div>
+  </main>
   <footer class="site-footer"><div class="footer-main"><div><a class="wordmark footer-wordmark" href="index.html">enroot<span>.</span></a><p>From early rays to evening light.<br>Clothing for a life well lived.</p></div><div><p class="footer-label">Discover</p><a href="shop.html">Shop the collection</a><a href="about.html">Our story</a><a href="contact.html">Get in touch</a></div><div><p class="footer-label">Need a hand?</p><a href="contact.html#faq">FAQs & shipping</a><a href="contact.html#size-guide">Size guide</a><a href="cart.html">Your bag</a></div><div class="newsletter"><p class="footer-label">A little note from us</p><p>New pieces, small rituals, and good things on the horizon.</p><form data-newsletter><label class="sr-only" for="newsletter-email">Email address</label><input id="newsletter-email" type="email" placeholder="Your email address" required><button aria-label="Subscribe to updates" type="submit">↗</button></form><p class="form-message" aria-live="polite"></p></div></div><div class="footer-bottom"><span>© <span data-year></span> Enroot. All rights reserved.</span><span>Rooted in simplicity.</span></div></footer>
   <a class="whatsapp-float" href="#" data-whatsapp aria-label="Chat with Enroot on WhatsApp" title="Chat on WhatsApp"><span aria-hidden="true">↗</span></a>
 </body>

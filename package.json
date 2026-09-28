@@ -1,0 +1,11 @@
+{
+  "name": "enroot-storefront",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check js/main.js && node --check js/orders-admin.js && node --check netlify/functions/orders.mjs"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.1"
+  }
+}

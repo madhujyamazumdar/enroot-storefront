@@ -24,6 +24,10 @@
           <input id="customer-name" name="name" autocomplete="name" required>
           <label for="customer-phone">Phone number (WhatsApp)</label>
           <input id="customer-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="[0-9]{10,15}" required>
+          <label for="customer-email">Email address (optional)</label>
+          <input id="customer-email" name="email" type="email" autocomplete="email">
+          <label class="sr-only" aria-hidden="true" for="website">Leave this field empty</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" hidden>
           <fieldset class="checkout-address-fields">
             <legend>Shipping address</legend>
             <label class="checkout-field checkout-field-wide">House / flat, building, street<input id="address-line1" name="addressLine1" autocomplete="address-line1" required></label>
@@ -42,7 +46,8 @@
             <label class="radio-option"><input type="radio" name="payment" value="UPI" checked> UPI</label>
             <label class="radio-option"><input type="radio" name="payment" value="Cash on Delivery"> Cash on Delivery</label>
           </fieldset>
-          <button class="button button-dark checkout-button" type="submit">Send order on WhatsApp <span aria-hidden="true">↗</span></button>
+          <label class="order-consent"><input type="checkbox" name="orderConsent" required><span>I agree Enroot may store and use these details to process and fulfill my order. <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy notice</a></span></label>
+          <button class="button button-dark checkout-button" type="submit">Place order & open WhatsApp <span aria-hidden="true">↗</span></button>
           <p class="form-message" data-checkout-message aria-live="polite"></p>
         </form>
         <div class="upi-box"><p class="eyebrow">Pay by UPI</p><p>Use your UPI app to pay after Enroot confirms your order.</p><p><strong>UPI ID:</strong> <span data-upi-id>your-upi-id@bank</span></p><img src="images/upi-qr-placeholder.svg" alt="Placeholder graphic for the Enroot UPI payment QR code"><small>Replace this placeholder with your verified UPI ID and QR code.</small></div>

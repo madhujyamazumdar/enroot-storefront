@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Order Records | Enroot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/orders.css">
+  <script src="js/orders-admin.js" defer></script>
+</head>
+<body>
+  <main class="orders-shell">
+    <header class="orders-header">
+      <a class="orders-wordmark" href="index.html">enroot<span>.</span></a>
+      <p>Private store dashboard</p>
+    </header>
+    <section class="orders-access" data-access-panel>
+      <p class="eyebrow">Enroot · Store</p>
+      <h1>Order records</h1>
+      <form data-admin-form>
+        <label for="admin-token">Admin access token</label>
+        <input id="admin-token" type="password" autocomplete="current-password" required>
+        <button type="submit">View orders</button>
+      </form>
+      <p class="orders-status" data-orders-status role="status" aria-live="polite"></p>
+    </section>
+    <section class="orders-results" data-orders-results hidden>
+      <div class="results-heading">
+        <div><p class="eyebrow">Customer orders</p><h2>Recent orders</h2><p data-order-count></p></div>
+        <div class="results-actions"><button type="button" data-refresh>Refresh</button><button type="button" class="button-secondary" data-sign-out>Sign out</button></div>
+      </div>
+      <div class="orders-list" data-orders-list></div>
+    </section>
+  </main>
+</body>
+</html>

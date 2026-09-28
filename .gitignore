@@ -13,6 +13,8 @@ desktop.ini
 node_modules/
 dist/
 build/
+.netlify/
+deno.lock
 
 # Local editor settings
 .vscode/

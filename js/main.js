@@ -13,9 +13,38 @@
   const formatPhone = (phone) => `+${phone.slice(0, 2)} ${phone.slice(2, 7)} ${phone.slice(7)}`;
   const whatsappUrl = (phone, message) => `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
-  function openWhatsAppChats(message) {
-    SHOP_PHONES.forEach((phone) => {
-      window.open(whatsappUrl(phone, message), "_blank", "noopener,noreferrer");
+  function reserveWhatsAppChats() {
+    return SHOP_PHONES.map(() => {
+      try {
+        const chat = window.open("about:blank", "_blank");
+        if (chat) chat.opener = null;
+        return chat;
+      } catch {
+        return null;
+      }
+    });
+  }
+
+  function openWhatsAppChats(message, reservedChats) {
+    return SHOP_PHONES.map((phone, index) => {
+      const chat = reservedChats[index];
+      if (!chat || chat.closed) return false;
+      chat.location.replace(whatsappUrl(phone, message));
+      return true;
+    });
+  }
+
+  function showWhatsAppFallback(status, orderId, message, openedChats) {
+    status.replaceChildren(document.createTextNode(`Order ${orderId} was saved. Pop-ups were blocked; open the remaining chat and press Send: `));
+    SHOP_PHONES.forEach((phone, index) => {
+      if (openedChats[index]) return;
+      const link = document.createElement("a");
+      link.href = whatsappUrl(phone, message);
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = formatPhone(phone);
+      status.append(link);
+      if (index < SHOP_PHONES.length - 1) status.append(document.createTextNode(" · "));
     });
   }
 
@@ -123,18 +152,72 @@
     if (totalElement) totalElement.textContent = money(total);
   }
 
-  function handleCheckout(event) {
+  async function handleCheckout(event) {
     event.preventDefault();
     const cart = readCart();
     if (!cart.length) return;
     const form = event.currentTarget;
     if (!form.reportValidity()) return;
+    if (form.dataset.submitting === "true") return;
+    form.dataset.submitting = "true";
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalButtonContent = submitButton?.innerHTML;
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Saving order…";
+    }
     const formData = new FormData(form);
-    const lines = cart.map((item) => {
-      const product = byId(item.id);
-      return `- ${product.name} (${item.size}) x ${item.quantity}: ${money(product.price * item.quantity)}`;
-    });
-    const total = cart.reduce((sum, item) => sum + byId(item.id).price * item.quantity, 0);
+    const status = document.querySelector("[data-checkout-message]");
+    const reservedChats = reserveWhatsAppChats();
+    if (status) status.textContent = "Saving your order…";
+
+    const orderPayload = {
+      consent: formData.get("orderConsent") === "on",
+      website: formData.get("website"),
+      customer: {
+        name: formData.get("name"),
+        phone: formData.get("phone"),
+        email: formData.get("email")
+      },
+      shippingAddress: {
+        addressLine1: formData.get("addressLine1"),
+        addressLine2: formData.get("addressLine2"),
+        locality: formData.get("locality"),
+        city: formData.get("city"),
+        district: formData.get("district"),
+        state: formData.get("state"),
+        postalCode: formData.get("postalCode"),
+        country: formData.get("country"),
+        landmark: formData.get("landmark"),
+        deliveryInstructions: formData.get("deliveryInstructions")
+      },
+      items: cart.map((item) => ({ id: item.id, size: item.size, quantity: item.quantity })),
+      paymentPreference: formData.get("payment")
+    };
+
+    let savedOrder;
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderPayload)
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Your order could not be saved.");
+      savedOrder = result;
+    } catch (error) {
+      reservedChats.forEach((chat) => { if (chat && !chat.closed) chat.close(); });
+      delete form.dataset.submitting;
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonContent;
+      }
+      if (status) status.textContent = `${error.message || "Order storage is unavailable."} Your order was not sent to WhatsApp. Please try again or contact Enroot.`;
+      return;
+    }
+
+    if (submitButton) submitButton.textContent = "Order recorded";
+    const lines = savedOrder.items.map((item) => `- ${item.name} (${item.size}) x ${item.quantity}: ${money(item.lineTotal)}`);
     const addressLines = [
       `Address line 1: ${formData.get("addressLine1")}`,
       formData.get("addressLine2") && `Address line 2: ${formData.get("addressLine2")}`,
@@ -147,10 +230,14 @@
       formData.get("landmark") && `Landmark: ${formData.get("landmark")}`,
       formData.get("deliveryInstructions") && `Delivery instructions: ${formData.get("deliveryInstructions")}`
     ].filter(Boolean);
-    const message = ["Hello Enroot, I'd like to place this order:", "", ...lines, "", `Subtotal: ${money(total)}`, `Payment preference: ${formData.get("payment")}`, "", `Name: ${formData.get("name")}`, `Phone: ${formData.get("phone")}`, "", "Delivery address:", ...addressLines].join("\n");
-    openWhatsAppChats(message);
-    const status = document.querySelector("[data-checkout-message]");
-    if (status) status.textContent = "Both WhatsApp chats are ready. Send the order message in each chat to share it with both numbers.";
+    const emailLine = formData.get("email") ? `Email: ${formData.get("email")}` : null;
+    const message = ["Hello Enroot, I'd like to place this order:", `Order ID: ${savedOrder.id}`, "", ...lines, "", `Subtotal: ${money(savedOrder.subtotal)}`, `Payment preference: ${formData.get("payment")}`, "", `Name: ${formData.get("name")}`, `Phone: ${formData.get("phone")}`, emailLine, "", "Delivery address:", ...addressLines].filter((line) => line !== null).join("\n");
+    const openedChats = openWhatsAppChats(message, reservedChats);
+    if (openedChats.every(Boolean)) {
+      if (status) status.textContent = `Order ${savedOrder.id} was recorded. Both WhatsApp chats are ready; press Send in each one.`;
+    } else if (status) {
+      showWhatsAppFallback(status, savedOrder.id, message, openedChats);
+    }
   }
 
   function updateBusinessDetails() {

@@ -166,6 +166,8 @@
     document.querySelectorAll("[data-contact-phone]").forEach((item) => { item.textContent = SHOP_PHONES.map(formatPhone).join(" · "); });
     document.querySelectorAll("[data-phone]").forEach((item) => { item.textContent = formatPhone(SHOP_PHONES[0]); });
     document.querySelectorAll("[data-phone-link]").forEach((link) => { link.href = `tel:+${SHOP_PHONES[0]}`; });
+    document.querySelectorAll("[data-secondary-phone]").forEach((item) => { item.textContent = formatPhone(SHOP_PHONES[1]); });
+    document.querySelectorAll("[data-secondary-phone-link]").forEach((link) => { link.href = `tel:+${SHOP_PHONES[1]}`; });
     document.querySelectorAll("[data-email]").forEach((item) => { item.textContent = SHOP_EMAIL; });
     document.querySelectorAll("[data-email-link]").forEach((link) => { link.href = `mailto:${SHOP_EMAIL}`; });
   }

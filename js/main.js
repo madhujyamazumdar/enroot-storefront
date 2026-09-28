@@ -3,13 +3,21 @@
   "use strict";
 
   const CART_KEY = "enroot-cart";
-  const SHOP_PHONE = "916000758804";
+  const SHOP_PHONES = ["916000758804", "919116584882"];
   const SHOP_EMAIL = "hello@enroot.in"; // Replace with your customer support email.
   const CURRENCY = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
   const products = window.ENROOT_PRODUCTS || [];
   const byId = (id) => products.find((product) => product.id === String(id));
   const money = (value) => CURRENCY.format(value);
   const safeText = (value) => String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+  const formatPhone = (phone) => `+${phone.slice(0, 2)} ${phone.slice(2, 7)} ${phone.slice(7)}`;
+  const whatsappUrl = (phone, message) => `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+  function openWhatsAppChats(message) {
+    SHOP_PHONES.forEach((phone) => {
+      window.open(whatsappUrl(phone, message), "_blank", "noopener,noreferrer");
+    });
+  }
 
   function readCart() {
     try {
@@ -140,20 +148,24 @@
       formData.get("deliveryInstructions") && `Delivery instructions: ${formData.get("deliveryInstructions")}`
     ].filter(Boolean);
     const message = ["Hello Enroot, I'd like to place this order:", "", ...lines, "", `Subtotal: ${money(total)}`, `Payment preference: ${formData.get("payment")}`, "", `Name: ${formData.get("name")}`, `Phone: ${formData.get("phone")}`, "", "Delivery address:", ...addressLines].join("\n");
-    window.open(`https://wa.me/${SHOP_PHONE}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    openWhatsAppChats(message);
     const status = document.querySelector("[data-checkout-message]");
-    if (status) status.textContent = "Your order details are ready in WhatsApp. Send the message there to confirm your order.";
+    if (status) status.textContent = "Both WhatsApp chats are ready. Send the order message in each chat to share it with both numbers.";
   }
 
   function updateBusinessDetails() {
     document.querySelectorAll("[data-whatsapp]").forEach((link) => {
       const text = link.classList.contains("whatsapp-float") ? "Hello Enroot, I have a question about your collection." : "Hello Enroot, I have a question.";
-      link.href = `https://wa.me/${SHOP_PHONE}?text=${encodeURIComponent(text)}`;
+      link.href = whatsappUrl(SHOP_PHONES[0], text);
       link.target = "_blank";
       link.rel = "noopener noreferrer";
+      link.addEventListener("click", () => {
+        SHOP_PHONES.slice(1).forEach((phone) => window.open(whatsappUrl(phone, text), "_blank", "noopener,noreferrer"));
+      });
     });
-    document.querySelectorAll("[data-contact-phone], [data-phone]").forEach((item) => { item.textContent = `+${SHOP_PHONE.slice(0, 2)} ${SHOP_PHONE.slice(2)}`; });
-    document.querySelectorAll("[data-phone-link]").forEach((link) => { link.href = `tel:+${SHOP_PHONE}`; });
+    document.querySelectorAll("[data-contact-phone]").forEach((item) => { item.textContent = SHOP_PHONES.map(formatPhone).join(" · "); });
+    document.querySelectorAll("[data-phone]").forEach((item) => { item.textContent = formatPhone(SHOP_PHONES[0]); });
+    document.querySelectorAll("[data-phone-link]").forEach((link) => { link.href = `tel:+${SHOP_PHONES[0]}`; });
     document.querySelectorAll("[data-email]").forEach((item) => { item.textContent = SHOP_EMAIL; });
     document.querySelectorAll("[data-email-link]").forEach((link) => { link.href = `mailto:${SHOP_EMAIL}`; });
   }

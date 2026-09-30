@@ -4,7 +4,7 @@
 
   const CART_KEY = "enroot-cart";
   const SHOP_PHONES = ["916000758804", "919116584882"];
-  const SHOP_EMAIL = "hello@enroot.in"; // Replace with your customer support email.
+  const SHOP_EMAIL = "enrootofficiall@gmail.com";
   const CURRENCY = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
   const products = window.ENROOT_PRODUCTS || [];
   const byId = (id) => products.find((product) => product.id === String(id));
